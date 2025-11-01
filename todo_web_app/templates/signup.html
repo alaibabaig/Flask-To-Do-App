@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h3 class="mb-3">{{ 'Sign Up' if 'signup' in request.path else 'Log In' }}</h3>
+    <form method="post">
+      {{ form.hidden_tag() }}
+      {% for field in form %}
+        <div class="mb-3">
+          {{ field.label(class="form-label") }}
+          {{ field(class="form-control", placeholder=field.label.text) }}
+          {% if field.errors %}
+            <div class="text-danger small">
+              {{ field.errors[0] }}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">{{ 'Sign Up' if 'signup' in request.path else 'Log In' }}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

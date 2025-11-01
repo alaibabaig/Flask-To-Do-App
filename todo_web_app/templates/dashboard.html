@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Your Tasks</h2>
+  <div>
+    <a class="btn btn-success" href="{{ url_for('add_task') }}">+ Add Task</a>
+  </div>
+</div>
+
+<!-- Filters -->
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-3">
+    <input class="form-control" name="category" placeholder="Category" value="{{ filters.category }}">
+  </div>
+  <div class="col-md-2">
+    <select name="priority" class="form-select">
+      <option value="">All priorities</option>
+      <option value="High" {% if filters.priority == 'High' %}selected{% endif %}>High</option>
+      <option value="Medium" {% if filters.priority == 'Medium' %}selected{% endif %}>Medium</option>
+      <option value="Low" {% if filters.priority == 'Low' %}selected{% endif %}>Low</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <select name="status" class="form-select">
+      <option value="all" {% if filters.status=='all' %}selected{% endif %}>All</option>
+      <option value="pending" {% if filters.status=='pending' %}selected{% endif %}>Pending</option>
+      <option value="completed" {% if filters.status=='completed' %}selected{% endif %}>Completed</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <select name="sort" class="form-select">
+      <option value="due" {% if filters.sort=='due' %}selected{% endif %}>Sort by Due</option>
+      <option value="created" {% if filters.sort=='created' %}selected{% endif %}>Newest</option>
+      <option value="priority" {% if filters.sort=='priority' %}selected{% endif %}>By Priority</option>
+    </select>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-outline-primary" type="submit">Apply</button>
+  </div>
+</form>
+
+{% if tasks %}
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Due</th>
+      <th>Priority</th>
+      <th>Category</th>
+      <th>Tags</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in tasks %}
+    <tr {% if t.is_completed %}class="table-success"{% endif %}>
+      <td>
+        <strong>{{ t.title }}</strong><br>
+        <small class="text-muted">{{ t.description[:80] }}{% if t.description and t.description|length > 80 %}...{% endif %}</small>
+      </td>
+      <td>{{ t.due_date.strftime("%Y-%m-%d %H:%M") if t.due_date else '-' }}</td>
+      <td>{{ t.priority }}</td>
+      <td>{{ t.category or '-' }}</td>
+      <td>{{ t.tags or '-' }}</td>
+      <td>{{ 'Done' if t.is_completed else 'Pending' }}</td>
+      <td>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('edit_task', task_id=t.id) }}">Edit</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('toggle_task', task_id=t.id) }}">
+          {% if t.is_completed %}Mark Pending{% else %}Mark Done{% endif %}
+        </a>
+        <a class="btn btn-sm btn-danger" href="{{ url_for('delete_task', task_id=t.id) }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="text-muted">No tasks yet. Click "Add Task" to create your first one.</p>
+{% endif %}
+{% endblock %}

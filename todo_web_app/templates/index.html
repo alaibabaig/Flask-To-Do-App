@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Welcome - MyTasks{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+  <h1>Welcome to MyTasks</h1>
+  <p class="lead">Sign up or log in to manage your private tasks.</p>
+  <a class="btn btn-primary me-2" href="{{ url_for('signup') }}">Sign Up</a>
+  <a class="btn btn-outline-primary" href="{{ url_for('login') }}">Log In</a>
+</div>
+{% endblock %}

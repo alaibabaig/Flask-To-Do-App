@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Delete Task{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h4>Delete Task</h4>
+    <p>Are you sure you want to permanently delete "<strong>{{ task.title }}</strong>"?</p>
+    <form method="post">
+      <button type="submit" class="btn btn-danger">Yes, Delete</button>
+      <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

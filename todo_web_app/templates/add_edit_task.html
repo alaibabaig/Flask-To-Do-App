@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h3>{{ action }}</h3>
+    <form method="post">
+      {{ form.hidden_tag() }}
+      <div class="mb-3">
+        {{ form.title.label }} {{ form.title(class="form-control") }}
+      </div>
+      <div class="mb-3">
+        {{ form.description.label }} {{ form.description(class="form-control", rows="4") }}
+      </div>
+      <div class="mb-3">
+        {{ form.due_date.label }} {{ form.due_date(class="form-control") }}
+        <div class="form-text">Example: 2025-12-31 14:30</div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          {{ form.priority.label }} {{ form.priority(class="form-select") }}
+        </div>
+        <div class="col-md-4 mb-3">
+          {{ form.category.label }} {{ form.category(class="form-control") }}
+        </div>
+        <div class="col-md-4 mb-3">
+          {{ form.tags.label }} {{ form.tags(class="form-control") }}
+        </div>
+      </div>
+      <div class="mb-3">
+        {{ form.reminder_at.label }} {{ form.reminder_at(class="form-control") }}
+        <div class="form-text">Optional reminder time (YYYY-MM-DD HH:MM)</div>
+      </div>
+      <div class="form-check mb-3">
+        {{ form.is_completed(class="form-check-input") }} {{ form.is_completed.label(class="form-check-label") }}
+      </div>
+      <button class="btn btn-primary" type="submit">{{ action }}</button>
+      <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
